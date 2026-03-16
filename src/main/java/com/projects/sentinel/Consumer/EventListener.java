@@ -18,12 +18,21 @@ public class EventListener {
         this.objectMapper = objectMapper;
         this.emailService = emailService;
     }
-    @KafkaListener(topics = "user-events", groupId = "sentinel-workers")
+    @KafkaListener(topics = "user-events", groupId = "sentinel-workers", concurrency = "3")
     public void consumeUserEvent(String message){
 
         try{
             UserEvent event = objectMapper.readValue(message, UserEvent.class);
-            emailService.processWelcomeEmail(event);
+
+            switch (event.getEventType().toUpperCase()){
+                case "SIGNUP":
+                    emailService.processWelcomeEmail(event);
+                case "LOGIN":
+                    emailService.processLoginAlert(event);
+                default :
+                    log.info("thread not processed due to unknown even type",Thread.currentThread().getName(), event.getEventType());
+            }
+
         }catch(Exception e){
             log.info("error occurred during email scheduling process");
             throw new RuntimeException("failed to process the event", e);

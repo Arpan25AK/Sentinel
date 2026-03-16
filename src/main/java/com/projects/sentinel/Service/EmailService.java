@@ -27,7 +27,7 @@ public class EmailService {
         log.info("starting heavy task for "+ event.getUsername());
 
 
-        MimeMessage messege = mailSender.createMimeMessage();
+        /*MimeMessage messege = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(messege,true,"UTF-8");
 
         org.thymeleaf.context.Context context = new Context();
@@ -39,9 +39,15 @@ public class EmailService {
         helper.setSubject("Welcome to the Platform! 🚀");
         helper.setText(htmlContent, true); // 'true' tells Gmail this is HTML, not plain text
 
-        mailSender.send(messege);
-
+        mailSender.send(messege); */
+        Thread.sleep(2000);
         log.info("✅ SUCCESS! Real HTML Email sent to: {}", event.getEmail());
+    }
+
+    public void processLoginAlert(UserEvent event ) throws Exception{
+        log.info("started the security check for", event.getEventType());
+        Thread.sleep(2000);
+        log.info("process finished for ", event.getUsername());
     }
 
 }
