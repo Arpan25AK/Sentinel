@@ -45,7 +45,7 @@ public class EmailService {
     }
 
     public void processLoginAlert(UserEvent event ) throws Exception{
-        log.info("started the security check for", event.getEventType());
+        log.info("started the security check for", event.getUsername());
         Thread.sleep(2000);
         log.info("process finished for ", event.getUsername());
     }

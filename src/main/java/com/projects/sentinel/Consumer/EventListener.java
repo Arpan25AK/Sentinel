@@ -27,8 +27,10 @@ public class EventListener {
             switch (event.getEventType().toUpperCase()){
                 case "SIGNUP":
                     emailService.processWelcomeEmail(event);
+                    break;
                 case "LOGIN":
                     emailService.processLoginAlert(event);
+                    break;
                 default :
                     log.info("thread not processed due to unknown even type",Thread.currentThread().getName(), event.getEventType());
             }

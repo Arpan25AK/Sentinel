@@ -3,6 +3,7 @@ package com.projects.sentinel.Controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projects.sentinel.Dto.UserEvent;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,19 @@ public class ProducerController {
         return "successfully fired the event to kafka";
     }catch(Exception e){
         return "error occured during event firing to kafka";
+        }
+    }
+
+    @PostMapping("/burst")
+    public String burstEvent(@RequestBody UserEvent event){
+        try{
+            for(int i =0; i<= 15; i++){
+                String messege = objectMapper.writeValueAsString(event);
+                kafkaTemplate.send("user-events", String.valueOf(i),messege);
+            }
+            return "evnet successfully bursted 15 times";
+        }catch(Exception e){
+            return "error occured during event bursting";
         }
     }
 }
