@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.projects.sentinel.Dto.UserEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,29 +24,32 @@ public class ProducerController {
         this.objectMapper = objectMapper;
     }
 
-    @PostMapping("/send")
-    public String sendTestEvent(@RequestBody UserEvent event){
+    @PostMapping("/signup")
+    public ResponseEntity<String> userSignUp(@RequestBody UserEvent event){
         try{
-        String message = objectMapper.writeValueAsString(event);
+            event.setEventType("signup");
+            String message = objectMapper.writeValueAsString(event);
 
-        kafkaTemplate.send("user-events",message);
+            kafkaTemplate.send("user-events",message);
 
-        return "successfully fired the event to kafka";
+            return ResponseEntity.ok("successfully registered the user");
     }catch(Exception e){
-        return "error occured during event firing to kafka";
+        return ResponseEntity.badRequest().body("error occurred during signup and event firing to kafka");
         }
     }
 
-    @PostMapping("/burst")
-    public String burstEvent(@RequestBody UserEvent event){
+
+    @PostMapping("/login")
+    public ResponseEntity<String> userLogin(@RequestBody UserEvent event){
         try{
-            for(int i =0; i<= 15; i++){
-                String messege = objectMapper.writeValueAsString(event);
-                kafkaTemplate.send("user-events", String.valueOf(i),messege);
-            }
-            return "evnet successfully bursted 15 times";
+            event.setEventType("login");
+            String message = objectMapper.writeValueAsString(event);
+
+            kafkaTemplate.send("user-events",message);
+
+            return ResponseEntity.ok("user successfully logged in");
         }catch(Exception e){
-            return "error occured during event bursting";
+            return ResponseEntity.badRequest().body("error occurred during login and event firing to kafka");
         }
     }
 }
