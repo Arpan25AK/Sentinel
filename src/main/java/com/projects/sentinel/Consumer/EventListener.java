@@ -28,11 +28,14 @@ public class EventListener {
                 case "SIGNUP":
                     emailService.processWelcomeEmail(event);
                     break;
-                case "LOGIN":
+                case "LOGIN_SUCCESS":
+                    log.info("📊 AUDIT: User {} logged in successfully from {}. No email sent.", event.getUsername(), event.getDeviceType());
+                    break;
+                case "LOGIN_ALERT":
                     emailService.processLoginAlert(event);
                     break;
                 default :
-                    log.info("thread not processed due to unknown even type",Thread.currentThread().getName(), event.getEventType());
+                    log.warn("thread not processed due to unknown even type",Thread.currentThread().getName(), event.getEventType());
             }
 
         }catch(Exception e){

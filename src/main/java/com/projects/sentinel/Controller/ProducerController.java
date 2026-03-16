@@ -45,11 +45,24 @@ public class ProducerController {
             event.setEventType("login");
             String message = objectMapper.writeValueAsString(event);
 
-            kafkaTemplate.send("user-events",message);
+            kafkaTemplate.send("user-events",event.getUsername(),message);
 
             return ResponseEntity.ok("user successfully logged in");
         }catch(Exception e){
-            return ResponseEntity.badRequest().body("error occurred during login and event firing to kafka");
+            return ResponseEntity.internalServerError().body("error occurred during login and event firing to kafka");
+        }
+    }
+
+    @PostMapping("/login/suspicious")
+    public ResponseEntity<String> suspiciousLogin(@RequestBody UserEvent event){
+        try{
+            event.setEventType("suspiciousLogin");
+            if(event.getDeviceType()=="null") event.setDeviceType("unknown device");
+            String message = objectMapper.writeValueAsString(event);
+            kafkaTemplate.send("user-events",event.getUsername(),message);
+            return ResponseEntity.ok("suspicious user loggen in! sent a login alert and updated to kafka");
+        }catch(Exception e){
+            return ResponseEntity.internalServerError().body("error occurred during login and event firing to kafka");
         }
     }
 }

@@ -43,9 +43,25 @@ public class EmailService {
     }
 
     public void processLoginAlert(UserEvent event ) throws Exception{
-        log.info("started the security check for", event.getUsername());
-        Thread.sleep(2000);
-        log.info("process finished for ", event.getUsername());
+        log.warn("running a check on user ", event.getUsername());
+
+        MimeMessage messege = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(messege, false, "UTF-8");
+
+        helper.setTo(event.getEmail());
+        helper.setSubject("new login from "+ event.getDeviceType());
+
+        String emailBody = String.format(
+                "Hello %s,\n\nWe detected a new login to your Sentinel account from an unrecognized device:" +
+                        " [%s].\n\nIf this was you, you can ignore this email." +
+                        " If this was NOT you, please reset your password immediately." +
+                        "\n\nStay Safe,\nThe Sentinel Team",
+                event.getUsername(), event.getDeviceType()
+        );
+
+        helper.setText(emailBody);
+        mailSender.send(messege);
+        log.warn("security alert about new login from" + event.getDeviceType() + "sent to " + event.getEmail());
     }
 
 }
