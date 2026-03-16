@@ -1,0 +1,33 @@
+server:
+  port: 8081 # Running on 8081
+
+spring:
+  application:
+    name: sentinel
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    # 2. Producer (Publisher) Configuration
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+    # 3. Consumer (Listener) Configuration
+    consumer:
+      group-id: sentinel-workers
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+    mail:
+      host: smtp.gmail.com
+      port: 587
+      username:
+      password:
+      properties:
+        mail:
+          smtp:
+            auth: true
+            starttls:
+              enable: true

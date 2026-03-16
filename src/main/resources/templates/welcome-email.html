@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body style="background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 40px 0;">
+<div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+
+    <h1 style="color: #2c3e50; text-align: center; margin-bottom: 10px;">Welcome to Sentinel! 🚀</h1>
+    <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 30px;">
+
+    <p style="font-size: 16px; color: #555;">Hello <strong style="color: #3498db;" th:text="${username}">User</strong>,</p>
+
+    <p style="font-size: 16px; color: #555; line-height: 1.6;">
+        We are thrilled to have you here. Your account was successfully created, and this email was delivered using an incredibly fast, event-driven Apache Kafka pipeline!
+    </p>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="#" style="background-color: #3498db; color: #ffffff; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;">Go to Dashboard</a>
+    </div>
+
+</div>
+</body>
+</html>
