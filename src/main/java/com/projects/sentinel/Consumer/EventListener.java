@@ -26,6 +26,7 @@ public class EventListener {
             emailService.processWelcomeEmail(event);
         }catch(Exception e){
             log.info("error occurred during email scheduling process");
+            throw new RuntimeException("failed to process the event", e);
         }
     }
 

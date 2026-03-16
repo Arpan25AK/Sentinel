@@ -22,30 +22,26 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
-    public void processWelcomeEmail(UserEvent event){
+    public void processWelcomeEmail(UserEvent event) throws Exception{
 
         log.info("starting heavy task for "+ event.getUsername());
 
-        try{
-            MimeMessage messege = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(messege,true,"UTF-8");
 
-            org.thymeleaf.context.Context context = new Context();
-            context.setVariable("username", event.getUsername());
+        MimeMessage messege = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(messege,true,"UTF-8");
 
-            String htmlContent = templateEngine.process("welcome-email", context);
+        org.thymeleaf.context.Context context = new Context();
+        context.setVariable("username", event.getUsername());
 
-            helper.setTo(event.getEmail());
-            helper.setSubject("Welcome to the Platform! 🚀");
-            helper.setText(htmlContent, true); // 'true' tells Gmail this is HTML, not plain text
+        String htmlContent = templateEngine.process("welcome-email", context);
 
-            mailSender.send(messege);
+        helper.setTo(event.getEmail());
+        helper.setSubject("Welcome to the Platform! 🚀");
+        helper.setText(htmlContent, true); // 'true' tells Gmail this is HTML, not plain text
 
-            log.info("✅ SUCCESS! Real HTML Email sent to: {}", event.getEmail());
-        }catch(Exception e){
-            log.info("error occured with email sending service",event.getEmail(), e);
-        }
+        mailSender.send(messege);
 
-        log.info("process completed successfully");
+        log.info("✅ SUCCESS! Real HTML Email sent to: {}", event.getEmail());
     }
+
 }
