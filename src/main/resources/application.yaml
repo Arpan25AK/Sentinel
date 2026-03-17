@@ -31,3 +31,9 @@ spring:
           auth: true
           starttls:
             enable: true
+
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health,info,metrics
