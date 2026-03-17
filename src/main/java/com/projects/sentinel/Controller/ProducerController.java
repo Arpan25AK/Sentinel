@@ -42,7 +42,7 @@ public class ProducerController {
     @PostMapping("/login")
     public ResponseEntity<String> userLogin(@RequestBody UserEvent event){
         try{
-            if(event.getDeviceType()==null) event.setDeviceType("SUSPICIOUS_LOGIN");
+            if(event.getDeviceType()==null) event.setDeviceType("UNKNOWN_DEVICE");
             String device = event.getDeviceType().toLowerCase();
             if(device.equals("windows") || device.equals("macbook") || device.equals("android")){
                 event.setEventType("LOGIN_SUCCESS");
