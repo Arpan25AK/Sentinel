@@ -31,7 +31,7 @@ public class EventListener {
                 case "LOGIN_SUCCESS":
                     log.info("📊 AUDIT: User {} logged in successfully from {}. No email sent.", event.getUsername(), event.getDeviceType());
                     break;
-                case "LOGIN_ALERT":
+                case "SUSPICIOUS_LOGIN":
                     emailService.processLoginAlert(event);
                     break;
                 default :

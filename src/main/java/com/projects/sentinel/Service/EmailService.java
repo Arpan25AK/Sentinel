@@ -46,20 +46,18 @@ public class EmailService {
         log.warn("running a check on user ", event.getUsername());
 
         MimeMessage messege = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(messege, false, "UTF-8");
+        MimeMessageHelper helper = new MimeMessageHelper(messege, true, "UTF-8");
+
+        Context context = new Context();
+        context.setVariable("username", event.getUsername());
+        context.setVariable("deviceType", event.getDeviceType());
+
+        String htmlContent = templateEngine.process("security-alert", context);
 
         helper.setTo(event.getEmail());
-        helper.setSubject("new login from "+ event.getDeviceType());
+        helper.setSubject("Login Alert!");
+        helper.setText(htmlContent, true);
 
-        String emailBody = String.format(
-                "Hello %s,\n\nWe detected a new login to your Sentinel account from an unrecognized device:" +
-                        " [%s].\n\nIf this was you, you can ignore this email." +
-                        " If this was NOT you, please reset your password immediately." +
-                        "\n\nStay Safe,\nThe Sentinel Team",
-                event.getUsername(), event.getDeviceType()
-        );
-
-        helper.setText(emailBody);
         mailSender.send(messege);
         log.warn("security alert about new login from" + event.getDeviceType() + "sent to " + event.getEmail());
     }
