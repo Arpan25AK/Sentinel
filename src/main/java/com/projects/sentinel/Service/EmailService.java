@@ -33,7 +33,7 @@ public class EmailService {
         org.thymeleaf.context.Context context = new Context();
         context.setVariable("username", event.getUsername());
 
-        String htmlContent = templateEngine.process("signup-email", context);
+        String htmlContent = templateEngine.process("welcome-email", context);
 
         helper.setTo(event.getEmail());
         helper.setSubject("Welcome to the Platform! 🚀");
@@ -50,7 +50,7 @@ public class EmailService {
 
         Context context = new Context();
         context.setVariable("username", event.getUsername());
-        context.setVariable("deviceType", event.getDeviceType());
+        context.setVariable("device", event.getDeviceType());
 
         String htmlContent = templateEngine.process("security-alert", context);
 
